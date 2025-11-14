@@ -1,78 +1,54 @@
+// src/App.js
 import React, { useState } from 'react';
 import { Shield, Lock, Eye, AlertTriangle, Users, ChevronRight } from 'lucide-react';
 import './App.css';
 
-export default function CyberSafetyWebsite() {
-  const [currentPage, setCurrentPage] = useState('home');
+export default function App() {
+  const [page, setPage] = useState('home');
   const [quizAnswers, setQuizAnswers] = useState({});
   const [quizSubmitted, setQuizSubmitted] = useState(false);
   const [quizScore, setQuizScore] = useState(0);
 
-  const changePage = (page) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   const threats = [
-    { icon: AlertTriangle, title: 'Cyberbullying', desc: 'Harassment through digital platforms including hurtful messages, spreading rumors, and excluding others online', color: 'from-red-500 to-orange-500' },
-    { icon: Eye, title: 'Privacy Risks', desc: 'Personal data exposure online through oversharing, weak privacy settings, and location tracking', color: 'from-purple-500 to-pink-500' },
-    { icon: Lock, title: 'Hacking', desc: 'Unauthorized access to accounts through password breaches, keyloggers, and security vulnerabilities', color: 'from-blue-500 to-cyan-500' },
-    { icon: Users, title: 'Social Engineering', desc: 'Manipulation techniques to reveal information including impersonation, pretexting, and building false trust', color: 'from-green-500 to-teal-500' },
-    { icon: Shield, title: 'Phishing', desc: 'Fake emails and messages designed to steal data by impersonating trusted sources and creating urgency', color: 'from-yellow-500 to-orange-500' },
+    { icon: AlertTriangle, title: 'Cyberbullying', desc: 'Harassment through digital platforms.', color: 'from-red-500 to-orange-500' },
+    { icon: Eye, title: 'Privacy Risks', desc: 'Personal data exposure online.', color: 'from-purple-500 to-pink-500' },
+    { icon: Lock, title: 'Hacking', desc: 'Unauthorized access to accounts.', color: 'from-blue-500 to-cyan-500' },
+    { icon: Users, title: 'Social Engineering', desc: 'Manipulation techniques to reveal info.', color: 'from-green-500 to-teal-500' },
+    { icon: Shield, title: 'Phishing', desc: 'Fake messages designed to steal data.', color: 'from-yellow-500 to-orange-500' },
   ];
 
   const tips = [
-    'Use strong, unique passwords for each account',
-    'Enable two-factor authentication everywhere',
-    'Think before you click on links or download files',
-    'Keep your personal information private',
-    'Verify who you\'re talking to online',
-    'Report suspicious activity immediately',
-    'Update your apps and devices regularly',
-    'Use privacy settings on social media',
-    'Never share passwords with anyone',
-    'Be careful about what you post online',
-    'Avoid using public Wi-Fi for sensitive activities',
-    'Don\'t accept friend requests from strangers',
-    'Use a VPN on public networks',
-    'Back up your important data regularly',
-    'Be skeptical of messages asking for personal info',
-    'Log out of accounts when using shared devices'
+    'Use strong passwords', 'Enable 2FA', 'Think before clicking links', 
+    'Keep info private', 'Verify who you talk to', 'Report suspicious activity',
+    'Update apps/devices', 'Use privacy settings', 'Never share passwords',
+    'Be careful what you post', 'Avoid public Wi-Fi', 'Ignore strangers requests',
+    'Use VPN', 'Back up data', 'Be skeptical of messages', 'Log out on shared devices'
   ];
 
-  const quizQuestions = [
-    { question: "What is cyberbullying?", options: ["Sending friendly messages", "Harassment through digital platforms", "Playing online games", "Creating social media accounts"], correct: 1 },
-    { question: "What should you do if you receive a suspicious email asking for your password?", options: ["Reply with your password", "Click all the links", "Delete it and report it", "Forward it to friends"], correct: 2 },
-    { question: "What is phishing?", options: ["A type of sport", "Fake messages designed to steal data", "A social media app", "A video game"], correct: 1 },
-    { question: "Should you accept friend requests from strangers?", options: ["Yes", "No", "Only if they seem nice", "Only on Fridays"], correct: 1 },
-    { question: "What does VPN stand for?", options: ["Very Private Network", "Virtual Private Network", "Video Playing Network", "Verified Personal Network"], correct: 1 }
+  const quiz = [
+    { q: "Cyberbullying?", options: ["Friendly messages", "Harassment", "Gaming", "Create accounts"], correct:1 },
+    { q: "Suspicious email?", options:["Reply","Click links","Delete/report","Forward"], correct:2 },
+    { q: "Phishing?", options:["Sport","Fake messages","App","Game"], correct:1 },
+    { q: "Friend requests from strangers?", options:["Yes","No","If nice","Only Fridays"], correct:1 },
+    { q: "VPN stands for?", options:["Very Private","Virtual Private","Video Playing","Verified Personal"], correct:1 }
   ];
 
-  const handleQuizAnswer = (qIndex, aIndex) => {
-    setQuizAnswers({...quizAnswers, [qIndex]: aIndex});
-  };
-
+  const handleQuizAnswer = (i, j) => setQuizAnswers({...quizAnswers, [i]: j});
   const submitQuiz = () => {
     let score = 0;
-    quizQuestions.forEach((q, i) => { if (quizAnswers[i] === q.correct) score++; });
-    setQuizScore(score);
-    setQuizSubmitted(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    quiz.forEach((q,i)=>{ if(quizAnswers[i]===q.correct) score++; });
+    setQuizScore(score); setQuizSubmitted(true);
+    window.scrollTo({top:0, behavior:'smooth'});
   };
+  const resetQuiz = ()=>{ setQuizAnswers({}); setQuizSubmitted(false); setQuizScore(0); }
 
-  const resetQuiz = () => {
-    setQuizAnswers({});
-    setQuizSubmitted(false);
-    setQuizScore(0);
-  };
-
-  const HomePage = () => (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 text-center">
+  const Home = () => (
+    <div className="min-h-screen flex flex-col items-center justify-center text-center px-4">
       <h1 className="text-5xl font-bold text-blue-400 mb-6">Cyber Safety for Teens</h1>
       <div className="flex gap-4 flex-wrap justify-center">
-        <button onClick={()=>changePage('threats')} className="px-6 py-3 bg-blue-600 rounded-lg text-white flex items-center gap-2">Explore Threats <ChevronRight /></button>
-        <button onClick={()=>changePage('tips')} className="px-6 py-3 bg-slate-800 rounded-lg text-white">Safety Tips</button>
-        <button onClick={()=>changePage('quiz')} className="px-6 py-3 bg-green-600 rounded-lg text-white">Quiz</button>
+        <button onClick={()=>setPage('threats')} className="px-6 py-3 bg-blue-600 rounded-lg text-white flex items-center gap-2">Explore Threats <ChevronRight /></button>
+        <button onClick={()=>setPage('tips')} className="px-6 py-3 bg-slate-800 rounded-lg text-white">Safety Tips</button>
+        <button onClick={()=>setPage('quiz')} className="px-6 py-3 bg-green-600 rounded-lg text-white">Quiz</button>
       </div>
     </div>
   );
@@ -106,17 +82,17 @@ export default function CyberSafetyWebsite() {
       <h2 className="text-4xl font-bold text-blue-400 mb-6">Quiz</h2>
       {quizSubmitted ? (
         <div>
-          <h3 className="text-2xl mb-4">Your Score: {quizScore}/{quizQuestions.length}</h3>
-          <button onClick={resetQuiz} className="px-6 py-2 bg-blue-600 rounded-lg text-white">Retake Quiz</button>
+          <h3 className="text-2xl mb-4">Score: {quizScore}/{quiz.length}</h3>
+          <button onClick={resetQuiz} className="px-6 py-2 bg-blue-600 rounded-lg text-white">Retake</button>
         </div>
       ) : (
         <div className="space-y-4">
-          {quizQuestions.map((q,i)=>(
+          {quiz.map((q,i)=>(
             <div key={i} className="p-4 border rounded-lg bg-slate-800 text-white">
-              <p className="font-bold">{q.question}</p>
+              <p className="font-bold">{q.q}</p>
               <div className="flex flex-col mt-2">
-                {q.options.map((opt,j)=>(
-                  <button key={j} onClick={()=>handleQuizAnswer(i,j)} className={`p-2 mt-1 border rounded ${quizAnswers[i]===j?'bg-blue-600 text-white':'bg-slate-700'}`}>{opt}</button>
+                {q.options.map((o,j)=>(
+                  <button key={j} onClick={()=>handleQuizAnswer(i,j)} className={`p-2 mt-1 border rounded ${quizAnswers[i]===j?'bg-blue-600 text-white':'bg-slate-700'}`}>{o}</button>
                 ))}
               </div>
             </div>
@@ -129,10 +105,11 @@ export default function CyberSafetyWebsite() {
 
   return (
     <div className="bg-slate-900 min-h-screen text-white">
-      {currentPage==='home' && <HomePage />}
-      {currentPage==='threats' && <ThreatsPage />}
-      {currentPage==='tips' && <TipsPage />}
-      {currentPage==='quiz' && <QuizPage />}
+      {page==='home' && <Home />}
+      {page==='threats' && <ThreatsPage />}
+      {page==='tips' && <TipsPage />}
+      {page==='quiz' && <QuizPage />}
     </div>
   );
 }
+
